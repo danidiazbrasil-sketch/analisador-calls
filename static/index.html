@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analisador de Calls — Marketing para Psicólogos</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-content">
+      <div class="header-brand">
+        <div class="header-icon">📊</div>
+        <div class="header-text">
+          <h1>Analisador de Calls</h1>
+          <p>IA para Equipes de Vendas · Marketing Digital para Psicólogos</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="main-grid">
+
+      <!-- Left Column: Form + History -->
+      <div class="left-col">
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Nova Análise</h2>
+            <p>Cole a transcrição da call e receba feedback detalhado</p>
+          </div>
+          <form id="analyzeForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="closerName">Nome do Closer</label>
+                <input type="text" id="closerName" placeholder="Ex: João Silva" required>
+              </div>
+              <div class="form-group">
+                <label for="servico">Serviço sendo vendido</label>
+                <select id="servico" required>
+                  <option value="">Selecione...</option>
+                  <option value="Google Ads">Google Ads (Tráfego Pago)</option>
+                  <option value="Fotos IA">Fotos IA (Identidade Visual)</option>
+                  <option value="Website">Website (Site Profissional)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="transcricao">Transcrição da Call</label>
+              <textarea id="transcricao" placeholder="Cole aqui a transcrição completa da call de vendas..." rows="16" required></textarea>
+            </div>
+            <button type="submit" id="submitBtn" class="btn-primary">
+              <span class="btn-icon">🔍</span>
+              <span class="btn-text">Analisar Call</span>
+            </button>
+          </form>
+        </div>
+
+        <div class="card" id="historyCard">
+          <div class="card-header">
+            <h2>Histórico de Análises</h2>
+            <p>Últimas 10 análises — clique para recarregar</p>
+          </div>
+          <div id="historyList">
+            <div class="empty-history">Nenhuma análise realizada ainda</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Results -->
+      <div class="right-col">
+
+        <!-- Empty state -->
+        <div class="card empty-results-card" id="emptyResultsCard">
+          <div class="empty-results-inner">
+            <div class="empty-results-icon">📋</div>
+            <h3>Pronto para analisar</h3>
+            <p>Preencha o formulário ao lado e clique em "Analisar Call" para receber uma avaliação completa da performance do closer.</p>
+            <div class="empty-features">
+              <div class="feature-item">🎯 6 critérios avaliados</div>
+              <div class="feature-item">⚡ Momento crítico identificado</div>
+              <div class="feature-item">💡 Sugestões práticas de melhoria</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading state -->
+        <div class="card loading-results-card" id="loadingResultsCard" style="display:none">
+          <div class="loading-inner">
+            <div class="spinner-large"></div>
+            <h3>Analisando a call com IA...</h3>
+            <p>O Claude está avaliando a performance do closer em 6 critérios. Isso pode levar alguns segundos.</p>
+            <div class="loading-steps">
+              <div class="step active">Lendo transcrição</div>
+              <div class="step">Avaliando critérios</div>
+              <div class="step">Gerando feedback</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div id="resultsArea" style="display:none">
+
+          <!-- Score overview -->
+          <div class="card score-card">
+            <div class="score-layout">
+              <div class="score-circle-wrap">
+                <div class="score-circle" id="scoreCircle">
+                  <span class="score-num" id="scoreNum">-</span>
+                  <span class="score-denom">/10</span>
+                </div>
+                <div class="score-label">Nota Geral</div>
+              </div>
+              <div class="score-info">
+                <div class="classification-pill" id="classificationPill">—</div>
+                <div class="score-meta">
+                  <div class="score-meta-item">
+                    <span class="meta-icon">👤</span>
+                    <span id="closerNameDisplay">—</span>
+                  </div>
+                  <div class="score-meta-item">
+                    <span class="meta-icon">📦</span>
+                    <span id="servicoDisplay">—</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Criteria -->
+          <div class="card">
+            <div class="card-header">
+              <h2>Avaliação por Critério</h2>
+              <p>Notas de 0–10 com feedback específico</p>
+            </div>
+            <div class="criteria-grid" id="criteriaGrid"></div>
+          </div>
+
+          <!-- Critical moment -->
+          <div class="card moment-card">
+            <div class="card-header">
+              <h2>⚡ Momento Crítico da Call</h2>
+              <p>O trecho que definiu o resultado da venda</p>
+            </div>
+            <blockquote class="moment-quote" id="momentoCritico"></blockquote>
+          </div>
+
+          <!-- Ideal phrase -->
+          <div class="card ideal-card">
+            <div class="card-header">
+              <h2>💡 O que o Closer Deveria Ter Dito</h2>
+              <p>Sugestão concreta de abordagem ideal</p>
+            </div>
+            <div class="ideal-phrase" id="fraseIdeal"></div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Analisador de Calls · Powered by <strong>Claude Haiku</strong> · Agência de Marketing para Psicólogos</p>
+  </footer>
+
+  <!-- Error toast -->
+  <div class="error-toast" id="errorToast"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
