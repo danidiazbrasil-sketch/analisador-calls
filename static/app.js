@@ -1,35 +1,49 @@
 /* ── DOM references ─────────────────────────────────────── */
 const el = {
-  form:               document.getElementById('analyzeForm'),
-  transcricao:        document.getElementById('transcricao'),
-  responsavel:        document.getElementById('responsavel'),
-  responsavelLabel:   document.getElementById('responsavelLabel'),
-  submitBtn:          document.getElementById('submitBtn'),
-  submitText:         document.getElementById('submitText'),
-  formTitle:          document.getElementById('formTitle'),
-  formSubtitle:       document.getElementById('formSubtitle'),
-  transcricaoLabel:   document.getElementById('transcricaoLabel'),
-  emptyResultsCard:   document.getElementById('emptyResultsCard'),
-  loadingResultsCard: document.getElementById('loadingResultsCard'),
-  resultsArea:        document.getElementById('resultsArea'),
-  historyList:        document.getElementById('historyList'),
-  scoreNum:           document.getElementById('scoreNum'),
-  scoreCircle:        document.getElementById('scoreCircle'),
-  classificationPill: document.getElementById('classificationPill'),
-  resultTipoBadge:    document.getElementById('resultTipoBadge'),
-  responsavelDisplay: document.getElementById('responsavelDisplay'),
-  servicoDisplay:     document.getElementById('servicoDisplay'),
-  servicoMetaItem:    document.getElementById('servicoMetaItem'),
-  portfolioCard:      document.getElementById('portfolioCard'),
-  portfolioServicos:  document.getElementById('portfolioServicos'),
-  portfolioAnalise:   document.getElementById('portfolioAnalise'),
-  criteriaGrid:       document.getElementById('criteriaGrid'),
-  criteriaSubtitle:   document.getElementById('criteriaSubtitle'),
-  topicosCard:        document.getElementById('topicosCard'),
-  topicosList:        document.getElementById('topicosList'),
-  momentoCritico:     document.getElementById('momentoCritico'),
-  fraseIdeal:         document.getElementById('fraseIdeal'),
-  errorToast:         document.getElementById('errorToast'),
+  form:                 document.getElementById('analyzeForm'),
+  transcricao:          document.getElementById('transcricao'),
+  responsavel:          document.getElementById('responsavel'),
+  responsavelLabel:     document.getElementById('responsavelLabel'),
+  submitBtn:            document.getElementById('submitBtn'),
+  submitText:           document.getElementById('submitText'),
+  formTitle:            document.getElementById('formTitle'),
+  formSubtitle:         document.getElementById('formSubtitle'),
+  transcricaoLabel:     document.getElementById('transcricaoLabel'),
+  emptyResultsCard:     document.getElementById('emptyResultsCard'),
+  loadingResultsCard:   document.getElementById('loadingResultsCard'),
+  resultsArea:          document.getElementById('resultsArea'),
+  historyList:          document.getElementById('historyList'),
+  scoreNum:             document.getElementById('scoreNum'),
+  scoreCircle:          document.getElementById('scoreCircle'),
+  classificationPill:   document.getElementById('classificationPill'),
+  resultTipoBadge:      document.getElementById('resultTipoBadge'),
+  responsavelDisplay:   document.getElementById('responsavelDisplay'),
+  servicoDisplay:       document.getElementById('servicoDisplay'),
+  servicoMetaItem:      document.getElementById('servicoMetaItem'),
+  // Vendas-only new cards
+  notasCard:            document.getElementById('notasCard'),
+  notasList:            document.getElementById('notasList'),
+  metricasCard:         document.getElementById('metricasCard'),
+  metricasStats:        document.getElementById('metricasStats'),
+  talkRatioCloser:      document.getElementById('talkRatioCloser'),
+  talkRatioProspect:    document.getElementById('talkRatioProspect'),
+  diagnosticoProporcao: document.getElementById('diagnosticoProporcao'),
+  spinCard:             document.getElementById('spinCard'),
+  spinGrid:             document.getElementById('spinGrid'),
+  spinAvaliacao:        document.getElementById('spinAvaliacao'),
+  tecnicasCard:         document.getElementById('tecnicasCard'),
+  tecnicasGrid:         document.getElementById('tecnicasGrid'),
+  // Existing cards
+  portfolioCard:        document.getElementById('portfolioCard'),
+  portfolioServicos:    document.getElementById('portfolioServicos'),
+  portfolioAnalise:     document.getElementById('portfolioAnalise'),
+  criteriaGrid:         document.getElementById('criteriaGrid'),
+  criteriaSubtitle:     document.getElementById('criteriaSubtitle'),
+  topicosCard:          document.getElementById('topicosCard'),
+  topicosList:          document.getElementById('topicosList'),
+  momentoCritico:       document.getElementById('momentoCritico'),
+  fraseIdeal:           document.getElementById('fraseIdeal'),
+  errorToast:           document.getElementById('errorToast'),
 };
 
 /* ── State ──────────────────────────────────────────────── */
@@ -55,6 +69,21 @@ const CRITERIA_ONBOARDING = {
   alinhamento_expectativas:{ label: 'Alinhamento de Expectativas', icon: '🎯' },
   suporte:                 { label: 'Suporte e Próximos Passos',icon: '💬' },
   encerramento:            { label: 'Encerramento',             icon: '🏁' },
+};
+
+const SPIN_META = {
+  situacao:    { label: 'Situação',    letter: 'S', desc: 'Mapeou o contexto atual?' },
+  problema:    { label: 'Problema',    letter: 'P', desc: 'Explorou as dores reais?' },
+  implicacao:  { label: 'Implicação',  letter: 'I', desc: 'Aprofundou as consequências?' },
+  necessidade: { label: 'Necessidade', letter: 'N', desc: 'Levou o prospect a pedir pela solução?' },
+};
+
+const TECNICA_META = {
+  escuta_ativa:    { label: 'Escuta Ativa',       icon: '👂' },
+  ancoragem_valor: { label: 'Ancoragem de Valor', icon: '⚓' },
+  manejo_objecoes: { label: 'Manejo de Objeções', icon: '🛡️' },
+  urgencia:        { label: 'Urgência',            icon: '⚡' },
+  prova_social:    { label: 'Prova Social',        icon: '🏆' },
 };
 
 /* ── Helpers ────────────────────────────────────────────── */
@@ -95,8 +124,8 @@ function switchTipo(tipo) {
   document.querySelectorAll('.tipo-tab').forEach(t => t.classList.toggle('active', t.dataset.tipo === tipo));
 
   if (tipo === 'onboarding') {
-    el.formTitle.textContent      = 'Nova Análise de Onboarding';
-    el.formSubtitle.textContent   = 'Cole a transcrição da reunião de início com o cliente';
+    el.formTitle.textContent        = 'Nova Análise de Onboarding';
+    el.formSubtitle.textContent     = 'Cole a transcrição da reunião de início com o cliente';
     el.responsavelLabel.textContent = 'Nome do Gestor';
     el.responsavel.placeholder      = 'Ex: Maria Santos';
     el.transcricaoLabel.textContent = 'Transcrição da Reunião de Onboarding';
@@ -134,7 +163,6 @@ function renderCriteria(criterios, tipo) {
   el.criteriaGrid.innerHTML = '';
   const meta = tipo === 'onboarding' ? CRITERIA_ONBOARDING : CRITERIA_VENDAS;
 
-  // Onboarding has 8 criteria → 2 columns still works, vendas has 6
   el.criteriaGrid.style.gridTemplateColumns = '1fr 1fr';
 
   for (const [key, data] of Object.entries(criterios)) {
@@ -203,6 +231,111 @@ function renderTopicos(topicos) {
   `).join('');
 }
 
+function renderNotasAvaliador(notas) {
+  if (!notas || !notas.length) { el.notasCard.style.display = 'none'; return; }
+  el.notasCard.style.display = 'block';
+  el.notasList.innerHTML = notas.map(nota => {
+    let cls = 'neutro';
+    if (nota.startsWith('✅')) cls = 'positivo';
+    else if (nota.startsWith('🔴')) cls = 'critico';
+    else if (nota.startsWith('💡')) cls = 'oportunidade';
+    return `<div class="nota-item ${cls}">${escapeHtml(nota)}</div>`;
+  }).join('');
+}
+
+function renderMetricas(metricas) {
+  if (!metricas) { el.metricasCard.style.display = 'none'; return; }
+  el.metricasCard.style.display = 'block';
+
+  const closer   = metricas.proporcao_fala_closer   || 0;
+  const prospect = metricas.proporcao_fala_prospect  || 0;
+  // Ideal for consultive sales: closer speaks 40-50% of the time
+  const cls      = closer > 60 ? 'bad' : closer > 50 ? 'mid' : closer < 30 ? 'mid' : 'good';
+  const labelMap = { good: 'Ideal ✓', mid: 'Atenção', bad: 'Excessivo' };
+
+  el.metricasStats.innerHTML = `
+    <div class="metrica-item">
+      <div class="metrica-num">${metricas.perguntas_feitas || 0}</div>
+      <div class="metrica-label">Perguntas feitas</div>
+    </div>
+    <div class="metrica-item">
+      <div class="metrica-num score-${cls}">${closer}%</div>
+      <div class="metrica-label">Fala do Closer</div>
+      <div class="metrica-badge ${cls}">${labelMap[cls]}</div>
+    </div>
+    <div class="metrica-item">
+      <div class="metrica-num">${prospect}%</div>
+      <div class="metrica-label">Fala do Prospect</div>
+    </div>
+  `;
+
+  el.talkRatioCloser.className   = `talk-bar-closer ${cls}`;
+  el.talkRatioCloser.style.width = closer + '%';
+  el.talkRatioCloser.textContent = closer > 18 ? closer + '%' : '';
+  el.talkRatioProspect.style.width = prospect + '%';
+  el.talkRatioProspect.textContent = prospect > 18 ? prospect + '%' : '';
+
+  el.diagnosticoProporcao.textContent = metricas.diagnostico_proporcao || '';
+}
+
+function renderSpin(spin) {
+  if (!spin) { el.spinCard.style.display = 'none'; return; }
+  el.spinCard.style.display = 'block';
+
+  const pillars = ['situacao', 'problema', 'implicacao', 'necessidade'];
+  el.spinGrid.innerHTML = pillars.map(key => {
+    const m   = SPIN_META[key];
+    const d   = spin[key] || {};
+    const cls = scoreClass(d.nota || 0);
+    return `
+      <div class="spin-item ${d.aplicou ? 'aplicou' : 'nao-aplicou'}">
+        <div class="spin-item-header">
+          <div class="spin-letter">${m.letter}</div>
+          <div class="spin-title-wrap">
+            <div class="spin-title">${m.label}</div>
+            <div class="spin-subdesc">${m.desc}</div>
+          </div>
+          <div class="spin-score score-${cls}">${d.nota || 0}/10</div>
+        </div>
+        <div class="spin-badge ${d.aplicou ? 'sim' : 'nao'}">${d.aplicou ? '✅ Aplicou' : '❌ Não aplicou'}</div>
+        <p class="spin-detalhe">${escapeHtml(d.detalhe || '')}</p>
+      </div>
+    `;
+  }).join('');
+
+  el.spinAvaliacao.textContent = spin.avaliacao_geral || '';
+}
+
+function renderTecnicas(tecnicas) {
+  if (!tecnicas) { el.tecnicasCard.style.display = 'none'; return; }
+  el.tecnicasCard.style.display = 'block';
+
+  el.tecnicasGrid.innerHTML = Object.entries(tecnicas).map(([key, data]) => {
+    const m   = TECNICA_META[key] || { label: key, icon: '📊' };
+    const cls = scoreClass(data.nota || 0);
+    const pct = ((data.nota || 0) / 10) * 100;
+    return `
+      <div class="tecnica-item">
+        <div class="tecnica-header">
+          <span class="tecnica-icon">${m.icon}</span>
+          <span class="tecnica-name">${m.label}</span>
+          <span class="tecnica-score score-${cls}">${data.nota}/10</span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-bar ${cls}" data-target="${pct}"></div>
+        </div>
+        <p class="tecnica-obs">${escapeHtml(data.observacao || '')}</p>
+      </div>
+    `;
+  }).join('');
+
+  requestAnimationFrame(() => {
+    el.tecnicasGrid.querySelectorAll('.progress-bar[data-target]').forEach(bar => {
+      bar.style.width = bar.dataset.target + '%';
+    });
+  });
+}
+
 function renderResults(data) {
   const tipo = data.tipo_reuniao || 'vendas';
 
@@ -214,15 +347,23 @@ function renderResults(data) {
   el.fraseIdeal.textContent         = data.frase_ideal;
 
   if (tipo === 'onboarding') {
-    el.servicoMetaItem.style.display  = 'none';
-    el.criteriaSubtitle.textContent   = '8 etapas do roteiro oficial Rota Studio';
-    el.portfolioCard.style.display    = 'none';
+    el.servicoMetaItem.style.display = 'none';
+    el.criteriaSubtitle.textContent  = '8 etapas do roteiro oficial Rota Studio';
+    el.portfolioCard.style.display   = 'none';
+    el.notasCard.style.display       = 'none';
+    el.metricasCard.style.display    = 'none';
+    el.spinCard.style.display        = 'none';
+    el.tecnicasCard.style.display    = 'none';
     renderTopicos(data.topicos_perdidos);
   } else {
-    el.servicoMetaItem.style.display  = 'none';
-    el.criteriaSubtitle.textContent   = '6 critérios de performance do closer';
-    el.topicosCard.style.display      = 'none';
+    el.servicoMetaItem.style.display = 'none';
+    el.criteriaSubtitle.textContent  = '6 critérios de performance do closer';
+    el.topicosCard.style.display     = 'none';
+    renderNotasAvaliador(data.notas_avaliador);
+    renderMetricas(data.metricas);
+    renderSpin(data.spin_selling);
     renderPortfolio(data.servicos_identificados, data.estrategia_portfolio);
+    renderTecnicas(data.tecnicas);
   }
 
   renderCriteria(data.criterios, tipo);

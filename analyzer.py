@@ -8,40 +8,80 @@ load_dotenv()
 
 # ── Prompt: Reunião de Vendas (Closers) ──────────────────────────────────────
 
-PROMPT_VENDAS = """Você é um especialista em vendas consultivas B2C para o mercado de saúde mental.
-Analise a transcrição desta call de vendas de uma agência de marketing digital que vende serviços para psicólogos.
+PROMPT_VENDAS = """Você é um avaliador especialista em vendas consultivas B2C para o mercado de saúde mental.
+Analise esta transcrição de call de vendas com o rigor de um coach de alto nível, como se fosse dar um feedback completo ao closer.
 
-O portfólio completo da agência é:
-- Google Ads: gestão de tráfego pago para atrair pacientes, investimento médio R$800-2000/mês (recorrente)
+PORTFÓLIO DA AGÊNCIA:
+- Google Ads: tráfego pago para atrair pacientes, R$800-2000/mês (recorrente)
 - Fotos IA: identidade visual profissional gerada por IA para o consultório (pagamento único)
-- Website: site profissional com SEO e integração WhatsApp (pagamento único)
-- Combo: todos os serviços juntos em pacote
+- Website: site profissional com SEO e WhatsApp (pagamento único)
+- Combo: todos os serviços em pacote com desconto
 
-ANALISE O CONTEXTO para determinar:
-1. Quais serviços foram apresentados na call
-2. Se o closer identificou corretamente o que o psicólogo precisava
-3. Se havia oportunidade de oferecer mais serviços que não foi aproveitada (ex: prospect sem site → deveria ter oferecido Website + Google Ads)
-4. Se o combo foi apresentado quando fazia sentido estratégico
-A sequência lógica ao vender mais de um serviço é: Website → Google Ads → Fotos IA.
+AVALIE OBRIGATORIAMENTE TODOS OS PONTOS ABAIXO:
 
-Psicólogos são compradores céticos, valorizam confiança, não gostam de pressão e precisam entender o ROI em pacientes novos, não em cliques.
+1. MÉTRICAS OBJETIVAS — conte com precisão:
+   - Quantas perguntas o closer fez ao longo da call? (conte cada "?" ou pergunta implícita)
+   - Estime o percentual de tempo de fala: closer vs. prospect
+   - Na venda consultiva o ideal é o closer falar no máximo 40-50% do tempo
 
-Transcrição:
+2. SPIN SELLING — avalie cada pilar com rigor:
+   - SITUAÇÃO: fez perguntas para mapear o contexto atual? (quantos pacientes, como os consegue, tem site, já investe em marketing, especialidade, atende online/presencial)
+   - PROBLEMA: explorou as dores reais? (depende de indicação, agenda irregular, mês ruim financeiramente, quer desligar dos planos de saúde)
+   - IMPLICAÇÃO: aprofundou as consequências do problema? (quanto deixa de ganhar sem previsibilidade, impacto na vida, quanto tempo ainda aguenta assim)
+   - NECESSIDADE: levou o prospect a reconhecer e PEDIR pela solução? (o cliente verbalizou que precisava ou o closer empurrou?)
+
+3. TÉCNICAS DE VENDA CONSULTIVA:
+   - Escuta ativa: repetiu, validou e usou as palavras do próprio prospect?
+   - Ancoragem de valor: traduziu o serviço em pacientes novos, não em cliques ou métricas técnicas?
+   - Manejo de objeções: usou técnica (validar → explorar → recontextualizar) ou foi defensivo?
+   - Urgência: criou motivo real para decidir agora sem ser manipulador?
+   - Prova social: citou cases reais de outros psicólogos de forma específica?
+
+4. ESTRATÉGIA DE PORTFÓLIO — analise o contexto para determinar:
+   - Quais serviços foram discutidos
+   - Se foram os certos dado o contexto deste psicólogo
+   - Se houve oportunidade de cross-sell não aproveitada
+
+CONTEXTO IMPORTANTE: Psicólogos são compradores céticos. Valorizam confiança, não pressão. O ROI deve sempre ser traduzido em pacientes novos, não em cliques. Pressão cria resistência e perde a venda.
+
+TRANSCRIÇÃO:
 {transcricao}
 
-Retorne APENAS um JSON válido com esta estrutura exata, sem texto antes ou depois:
+Retorne APENAS JSON válido, sem nenhum texto antes ou depois:
 {{
   "nota_geral": 7.5,
   "classificacao": "Bom closer",
-  "servicos_identificados": ["Google Ads", "Website"],
-  "estrategia_portfolio": "2-3 frases avaliando a estratégia de portfólio: quais serviços o closer ofereceu, se foi a escolha certa dado o contexto do psicólogo, e se perdeu oportunidades de apresentar outros serviços relevantes",
+  "metricas": {{
+    "perguntas_feitas": 8,
+    "proporcao_fala_closer": 65,
+    "proporcao_fala_prospect": 35,
+    "diagnostico_proporcao": "Frase direta avaliando a proporção: se >60% closer é ruim para venda consultiva, se ~40-50% é ideal, se <40% pode ser que não conduziu bem"
+  }},
+  "spin_selling": {{
+    "situacao": {{"aplicou": true, "nota": 7, "detalhe": "O que o closer fez ou deixou de fazer neste pilar com exemplo da transcrição"}},
+    "problema": {{"aplicou": true, "nota": 6, "detalhe": "..."}},
+    "implicacao": {{"aplicou": false, "nota": 3, "detalhe": "..."}},
+    "necessidade": {{"aplicou": false, "nota": 2, "detalhe": "..."}},
+    "avaliacao_geral": "1-2 frases resumindo o nível de SPIN usado na call e o impacto disso no resultado"
+  }},
+  "tecnicas": {{
+    "escuta_ativa": {{"nota": 6, "observacao": "exemplo concreto da transcrição"}},
+    "ancoragem_valor": {{"nota": 7, "observacao": "..."}},
+    "manejo_objecoes": {{"nota": 5, "observacao": "..."}},
+    "urgencia": {{"nota": 4, "observacao": "..."}},
+    "prova_social": {{"nota": 6, "observacao": "..."}}
+  }},
+  "notas_avaliador": [
+    "✅ Ponto positivo 1 específico com referência ao que aconteceu na call",
+    "✅ Ponto positivo 2 específico",
+    "🔴 Ponto crítico 1 com exemplo exato do que foi dito ou deixado de dizer",
+    "🔴 Ponto crítico 2 com impacto claro",
+    "💡 Oportunidade perdida específica que mudaria o resultado"
+  ],
+  "servicos_identificados": ["Google Ads"],
+  "estrategia_portfolio": "2-3 frases sobre quais serviços o closer ofereceu, se foi a estratégia certa dado o contexto do psicólogo e o que poderia ter feito diferente",
   "criterios": {{
-    "rapport": {{
-      "nota": 8,
-      "bem": "Personalizou a abordagem para psicólogos",
-      "falhou": "Não perguntou sobre a especialidade do psicólogo",
-      "melhoria": "Pergunte a especialidade logo no início para personalizar ainda mais"
-    }},
+    "rapport": {{"nota": 8, "bem": "máximo 2 frases", "falhou": "máximo 2 frases", "melhoria": "1 frase direta e prática"}},
     "qualificacao": {{"nota": 6, "bem": "...", "falhou": "...", "melhoria": "..."}},
     "apresentacao": {{"nota": 7, "bem": "...", "falhou": "...", "melhoria": "..."}},
     "objecoes": {{"nota": 5, "bem": "...", "falhou": "...", "melhoria": "..."}},
@@ -118,8 +158,8 @@ async def analyze_call(transcricao: str, servico: str, tipo_reuniao: str = "vend
         prompt = PROMPT_VENDAS.format(transcricao=transcricao)
 
     message = await client.messages.create(
-        model="claude-sonnet-4-5",
-        max_tokens=2500,
+        model="claude-haiku-4-5-20251001",
+        max_tokens=4096,
         messages=[{"role": "user", "content": prompt}],
     )
 
@@ -128,6 +168,12 @@ async def analyze_call(transcricao: str, servico: str, tipo_reuniao: str = "vend
     json_match = re.search(r"```(?:json)?\s*([\s\S]*?)\s*```", response_text)
     if json_match:
         response_text = json_match.group(1).strip()
+
+    # Fallback: extract from first { to last } in case there's surrounding text
+    if not response_text.startswith('{'):
+        brace_match = re.search(r'(\{[\s\S]*\})', response_text)
+        if brace_match:
+            response_text = brace_match.group(1)
 
     try:
         return json.loads(response_text)

@@ -146,6 +146,44 @@
             </div>
           </div>
 
+          <!-- Notas do Avaliador (vendas only) -->
+          <div class="card notas-card" id="notasCard" style="display:none">
+            <div class="card-header">
+              <h2>📝 Notas do Avaliador</h2>
+              <p>Pontos positivos, críticos e oportunidades perdidas identificados pela IA</p>
+            </div>
+            <div id="notasList"></div>
+          </div>
+
+          <!-- Métricas da Call (vendas only) -->
+          <div class="card metricas-card" id="metricasCard" style="display:none">
+            <div class="card-header">
+              <h2>📊 Métricas da Call</h2>
+              <p>Dados objetivos sobre a dinâmica da conversa</p>
+            </div>
+            <div class="metricas-stats" id="metricasStats"></div>
+            <div class="talk-ratio-wrap">
+              <div class="talk-ratio-bar">
+                <div class="talk-bar-closer" id="talkRatioCloser"></div>
+                <div class="talk-bar-prospect" id="talkRatioProspect"></div>
+              </div>
+              <div class="talk-ratio-labels">
+                <span>Closer</span><span>Prospect</span>
+              </div>
+            </div>
+            <div class="diagnostico-box" id="diagnosticoProporcao"></div>
+          </div>
+
+          <!-- SPIN Selling (vendas only) -->
+          <div class="card spin-card" id="spinCard" style="display:none">
+            <div class="card-header">
+              <h2>🔄 SPIN Selling</h2>
+              <p>Avaliação dos 4 pilares da venda consultiva</p>
+            </div>
+            <div class="spin-grid" id="spinGrid"></div>
+            <div class="spin-avaliacao-box" id="spinAvaliacao"></div>
+          </div>
+
           <!-- Portfolio strategy (vendas only) -->
           <div class="card portfolio-card" id="portfolioCard" style="display:none">
             <div class="card-header">
@@ -163,6 +201,15 @@
               <p>Itens obrigatórios do roteiro que precisam de atenção</p>
             </div>
             <div id="topicosList"></div>
+          </div>
+
+          <!-- Técnicas Consultivas (vendas only) -->
+          <div class="card tecnicas-card" id="tecnicasCard" style="display:none">
+            <div class="card-header">
+              <h2>🎯 Técnicas Consultivas</h2>
+              <p>5 técnicas essenciais de venda consultiva avaliadas na call</p>
+            </div>
+            <div class="tecnicas-grid" id="tecnicasGrid"></div>
           </div>
 
           <!-- Criteria -->
@@ -199,7 +246,8 @@
   </div>
 
   <footer class="footer">
-    <p>Analisador de Reuniões · <a href="https://arotastudio.com.br" target="_blank">Rota Studio</a> · Powered by Claude Sonnet AI · Ferramenta interna para equipe de vendas e gestores</p>
+    <p>Analisador de Reuniões · <a href="https://arotastudio.com.br" target="_blank">Rota Studio</a> · Powered by Claude AI · Ferramenta interna para equipe de vendas e gestores</p>
+    <p class="footer-credit">Desenvolvido por <strong>Daniel Uzcategui</strong></p>
   </footer>
 
   <div class="error-toast" id="errorToast"></div>
