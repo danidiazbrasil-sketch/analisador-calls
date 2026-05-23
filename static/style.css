@@ -236,6 +236,7 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 14px;
   margin-bottom: 16px;
+  align-items: start;
 }
 .form-group { margin-bottom: 16px; }
 .form-group:last-of-type { margin-bottom: 20px; }

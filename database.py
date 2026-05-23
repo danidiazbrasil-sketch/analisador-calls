@@ -14,6 +14,7 @@ class Database:
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     responsavel TEXT NOT NULL,
+                    cliente TEXT DEFAULT '',
                     servico TEXT NOT NULL,
                     nota_geral REAL NOT NULL,
                     classificacao TEXT NOT NULL,
@@ -25,6 +26,7 @@ class Database:
             for col, definition in [
                 ("tipo_reuniao", "TEXT DEFAULT 'vendas'"),
                 ("responsavel", "TEXT DEFAULT ''"),
+                ("cliente",     "TEXT DEFAULT ''"),
             ]:
                 try:
                     await db.execute(f"ALTER TABLE analyses ADD COLUMN {col} {definition}")
@@ -33,16 +35,17 @@ class Database:
             await db.commit()
 
     async def save_analysis(
-        self, responsavel: str, servico: str, tipo_reuniao: str, result: dict
+        self, responsavel: str, cliente: str, servico: str, tipo_reuniao: str, result: dict
     ) -> int:
         async with aiosqlite.connect(self.db_path) as db:
             cursor = await db.execute(
                 """
-                INSERT INTO analyses (responsavel, servico, nota_geral, classificacao, result, tipo_reuniao)
-                VALUES (?, ?, ?, ?, ?, ?)
+                INSERT INTO analyses (responsavel, cliente, servico, nota_geral, classificacao, result, tipo_reuniao)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     responsavel,
+                    cliente,
                     servico,
                     result["nota_geral"],
                     result["classificacao"],
@@ -58,7 +61,7 @@ class Database:
             db.row_factory = aiosqlite.Row
             cursor = await db.execute(
                 """
-                SELECT id, created_at, responsavel, servico, nota_geral, classificacao, tipo_reuniao
+                SELECT id, created_at, responsavel, cliente, servico, nota_geral, classificacao, tipo_reuniao
                 FROM analyses
                 ORDER BY created_at DESC
                 LIMIT 20
@@ -83,6 +86,7 @@ class Database:
                 "id": row_dict["id"],
                 "created_at": row_dict["created_at"],
                 "responsavel": row_dict.get("responsavel") or row_dict.get("closer_name", ""),
+                "cliente": row_dict.get("cliente", ""),
                 "servico": row_dict["servico"],
                 "tipo_reuniao": row_dict.get("tipo_reuniao", "vendas"),
                 **result,

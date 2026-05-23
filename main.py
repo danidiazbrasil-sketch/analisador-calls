@@ -33,6 +33,7 @@ async def root():
 class AnalyzeRequest(BaseModel):
     transcricao: str
     responsavel: str
+    cliente: str = ""
     servico: str = ""
     tipo_reuniao: str = "vendas"
 
@@ -43,6 +44,7 @@ async def analyze(request: AnalyzeRequest):
         result = await analyze_call(request.transcricao, request.servico, request.tipo_reuniao)
         analysis_id = await db.save_analysis(
             responsavel=request.responsavel,
+            cliente=request.cliente,
             servico=request.servico or request.tipo_reuniao,
             tipo_reuniao=request.tipo_reuniao,
             result=result,
@@ -50,6 +52,7 @@ async def analyze(request: AnalyzeRequest):
         return {
             "id": analysis_id,
             "responsavel": request.responsavel,
+            "cliente": request.cliente,
             "servico": request.servico,
             "tipo_reuniao": request.tipo_reuniao,
             **result,

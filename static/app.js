@@ -20,6 +20,9 @@ const el = {
   responsavelDisplay:   document.getElementById('responsavelDisplay'),
   servicoDisplay:       document.getElementById('servicoDisplay'),
   servicoMetaItem:      document.getElementById('servicoMetaItem'),
+  clienteInput:         document.getElementById('cliente'),
+  clienteDisplay:       document.getElementById('clienteDisplay'),
+  clienteMetaItem:      document.getElementById('clienteMetaItem'),
   // Vendas-only new cards
   notasCard:            document.getElementById('notasCard'),
   notasList:            document.getElementById('notasList'),
@@ -346,6 +349,13 @@ function renderResults(data) {
   el.momentoCritico.textContent     = data.momento_critico;
   el.fraseIdeal.textContent         = data.frase_ideal;
 
+  if (data.cliente) {
+    el.clienteDisplay.textContent      = data.cliente;
+    el.clienteMetaItem.style.display   = 'flex';
+  } else {
+    el.clienteMetaItem.style.display   = 'none';
+  }
+
   if (tipo === 'onboarding') {
     el.servicoMetaItem.style.display = 'none';
     el.criteriaSubtitle.textContent  = '8 etapas do roteiro oficial Rota Studio';
@@ -382,8 +392,9 @@ function renderHistory(items, filter = 'all') {
     const tipo = item.tipo_reuniao || 'vendas';
     const cls  = scoreClass(item.nota_geral);
     const date = formatDate(item.created_at);
-    const name = item.responsavel || item.closer_name || '—';
-    const sub  = tipo === 'onboarding' ? 'Onboarding' : escapeHtml(item.servico || '—');
+    const name   = item.responsavel || item.closer_name || '—';
+    const cliente = item.cliente ? ` · ${item.cliente}` : '';
+    const sub  = tipo === 'onboarding' ? `Onboarding${cliente}` : escapeHtml(item.servico || '—') + escapeHtml(cliente);
 
     const div = document.createElement('div');
     div.className = 'history-item';
@@ -457,6 +468,7 @@ el.form.addEventListener('submit', async (e) => {
 
   const transcricao  = el.transcricao.value.trim();
   const responsavel  = el.responsavel.value.trim();
+  const cliente      = el.clienteInput.value.trim();
   const tipo_reuniao = currentTipo;
 
   if (!transcricao || !responsavel) {
@@ -474,7 +486,7 @@ el.form.addEventListener('submit', async (e) => {
   if (window.innerWidth < 1100) el.loadingResultsCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
   try {
-    const data = await apiPost({ transcricao, responsavel, servico: '', tipo_reuniao });
+    const data = await apiPost({ transcricao, responsavel, cliente, servico: '', tipo_reuniao });
     renderResults(data);
     refreshHistory();
     if (window.innerWidth < 1100) el.resultsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
