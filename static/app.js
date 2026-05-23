@@ -47,11 +47,13 @@ const el = {
   momentoCritico:       document.getElementById('momentoCritico'),
   fraseIdeal:           document.getElementById('fraseIdeal'),
   errorToast:           document.getElementById('errorToast'),
+  downloadBtn:          document.getElementById('downloadBtn'),
 };
 
 /* ── State ──────────────────────────────────────────────── */
-let currentTipo = 'vendas';
-let allHistory  = [];
+let currentTipo     = 'vendas';
+let allHistory      = [];
+let currentAnalysis = null;   // último resultado renderizado
 
 /* ── Criteria metadata ──────────────────────────────────── */
 const CRITERIA_VENDAS = {
@@ -377,6 +379,7 @@ function renderResults(data) {
   }
 
   renderCriteria(data.criterios, tipo);
+  currentAnalysis = data;
   showPanel('results');
 }
 
@@ -496,6 +499,43 @@ el.form.addEventListener('submit', async (e) => {
   } finally {
     el.submitBtn.disabled = false;
     el.submitBtn.innerHTML = '<span class="btn-icon">🔍</span><span class="btn-text" id="submitText">' + (currentTipo === 'onboarding' ? 'Analisar Onboarding' : 'Analisar Call') + '</span>';
+  }
+});
+
+/* ── PDF Download ───────────────────────────────────────── */
+el.downloadBtn.addEventListener('click', async () => {
+  if (!currentAnalysis) return;
+
+  const d    = currentAnalysis;
+  const tipo = d.tipo_reuniao === 'onboarding' ? 'Onboarding' : 'Vendas';
+  const resp = d.responsavel || 'responsavel';
+  const cli  = d.cliente     ? `-${d.cliente}` : '';
+  const date = new Date().toLocaleDateString('pt-BR').replace(/\//g, '-');
+  const filename = `Analise-${tipo}-${resp}${cli}-${date}.pdf`.replace(/\s+/g, '_');
+
+  el.downloadBtn.disabled     = true;
+  el.downloadBtn.innerHTML    = '<span class="spinner-sm"></span> Gerando PDF...';
+
+  // Elemento a capturar (excluindo o próprio botão)
+  const source = document.getElementById('resultsArea');
+
+  const opt = {
+    margin:      [12, 10, 12, 10],
+    filename,
+    image:       { type: 'jpeg', quality: 0.97 },
+    html2canvas: { scale: 2, useCORS: true, logging: false, scrollY: 0 },
+    jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    pagebreak:   { mode: ['avoid-all', 'css', 'legacy'] },
+  };
+
+  try {
+    // Oculta o botão durante a captura para não aparecer no PDF
+    el.downloadBtn.closest('.results-actions').style.visibility = 'hidden';
+    await html2pdf().set(opt).from(source).save();
+  } finally {
+    el.downloadBtn.closest('.results-actions').style.visibility = 'visible';
+    el.downloadBtn.disabled  = false;
+    el.downloadBtn.innerHTML = '<span>📄</span> Baixar PDF';
   }
 });
 

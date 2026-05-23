@@ -125,6 +125,13 @@
         <!-- Results -->
         <div id="resultsArea" style="display:none">
 
+          <!-- Download action bar -->
+          <div class="results-actions">
+            <button class="btn-download" id="downloadBtn">
+              <span>📄</span> Baixar PDF
+            </button>
+          </div>
+
           <!-- Score overview -->
           <div class="card score-card">
             <div class="score-layout">
@@ -262,6 +269,7 @@
 
   <div class="error-toast" id="errorToast"></div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="/static/app.js"></script>
 </body>
 </html>

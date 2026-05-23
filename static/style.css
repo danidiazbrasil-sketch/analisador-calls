@@ -595,6 +595,36 @@ body {
 .history-score { font-size: 1.25rem; font-weight: 800; line-height: 1; }
 .history-class { font-size: .7rem; color: var(--text-muted); margin-top: 2px; }
 
+/* ── Results Action Bar ──────────────────────────────────── */
+.results-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px;
+  background: var(--dark);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: .85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: .2px;
+  transition: background .18s, transform .15s, box-shadow .15s;
+}
+.btn-download:hover {
+  background: var(--dark-mid);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(28,15,5,.25);
+}
+.btn-download:active { transform: translateY(0); }
+.btn-download:disabled { opacity: .65; cursor: not-allowed; }
+
 /* ── Notas do Avaliador ──────────────────────────────────── */
 .notas-card { border-left: 4px solid var(--dark); }
 .nota-item {
