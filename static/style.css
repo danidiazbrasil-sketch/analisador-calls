@@ -490,6 +490,35 @@ body {
   line-height: 1.5;
 }
 
+/* ── Portfolio Card ──────────────────────────────────────── */
+.portfolio-card { border-left: 4px solid var(--gold); }
+.portfolio-servicos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.portfolio-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  background: var(--gold-bg);
+  border: 1.5px solid var(--gold);
+  border-radius: 100px;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--gold-dark);
+}
+.portfolio-analise {
+  font-size: .875rem;
+  color: var(--text);
+  line-height: 1.7;
+  background: var(--cream);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
 /* ── Moment & Ideal Cards ─────────────────────────────────── */
 .moment-card {
   background: var(--dark);

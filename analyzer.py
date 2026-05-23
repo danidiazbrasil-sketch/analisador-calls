@@ -9,14 +9,21 @@ load_dotenv()
 # ── Prompt: Reunião de Vendas (Closers) ──────────────────────────────────────
 
 PROMPT_VENDAS = """Você é um especialista em vendas consultivas B2C para o mercado de saúde mental.
-Analise a transcrição desta call de vendas de uma agência de marketing digital que vende {servico} para psicólogos.
+Analise a transcrição desta call de vendas de uma agência de marketing digital que vende serviços para psicólogos.
 
-Contexto dos produtos:
-- Google Ads: gestão de tráfego pago para atrair pacientes, investimento médio R$800-2000/mês
-- Fotos IA: identidade visual profissional gerada por IA para o consultório, pagamento único
-- Website: criação de site profissional para psicólogo, com SEO e integração com WhatsApp
+O portfólio completo da agência é:
+- Google Ads: gestão de tráfego pago para atrair pacientes, investimento médio R$800-2000/mês (recorrente)
+- Fotos IA: identidade visual profissional gerada por IA para o consultório (pagamento único)
+- Website: site profissional com SEO e integração WhatsApp (pagamento único)
+- Combo: todos os serviços juntos em pacote
 
-{contexto_combo}Avalie com base em como um closer experiente neste nicho específico agiria.
+ANALISE O CONTEXTO para determinar:
+1. Quais serviços foram apresentados na call
+2. Se o closer identificou corretamente o que o psicólogo precisava
+3. Se havia oportunidade de oferecer mais serviços que não foi aproveitada (ex: prospect sem site → deveria ter oferecido Website + Google Ads)
+4. Se o combo foi apresentado quando fazia sentido estratégico
+A sequência lógica ao vender mais de um serviço é: Website → Google Ads → Fotos IA.
+
 Psicólogos são compradores céticos, valorizam confiança, não gostam de pressão e precisam entender o ROI em pacientes novos, não em cliques.
 
 Transcrição:
@@ -26,6 +33,8 @@ Retorne APENAS um JSON válido com esta estrutura exata, sem texto antes ou depo
 {{
   "nota_geral": 7.5,
   "classificacao": "Bom closer",
+  "servicos_identificados": ["Google Ads", "Website"],
+  "estrategia_portfolio": "2-3 frases avaliando a estratégia de portfólio: quais serviços o closer ofereceu, se foi a escolha certa dado o contexto do psicólogo, e se perdeu oportunidades de apresentar outros serviços relevantes",
   "criterios": {{
     "rapport": {{
       "nota": 8,
@@ -106,24 +115,7 @@ async def analyze_call(transcricao: str, servico: str, tipo_reuniao: str = "vend
     if tipo_reuniao == "onboarding":
         prompt = PROMPT_ONBOARDING.format(transcricao=transcricao)
     else:
-        is_combo = "combo" in servico.lower()
-        contexto_combo = (
-            """Atenção: esta call envolve a venda do COMBO completo (todos os 3 serviços juntos).
-Avalie especialmente:
-- Se o closer qualificou qual serviço o psicólogo precisa mais antes de apresentar o combo
-- Se apresentou os serviços na ordem lógica: Website → Google Ads → Fotos IA
-- Se soube ancorar o valor do combo vs. preço individual de cada serviço
-- Se propôs próximo passo claro mesmo que o psicólogo não fechasse tudo de uma vez
-
-"""
-            if is_combo
-            else ""
-        )
-        prompt = PROMPT_VENDAS.format(
-            servico=servico,
-            transcricao=transcricao,
-            contexto_combo=contexto_combo,
-        )
+        prompt = PROMPT_VENDAS.format(transcricao=transcricao)
 
     message = await client.messages.create(
         model="claude-sonnet-4-5",

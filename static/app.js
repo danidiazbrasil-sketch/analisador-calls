@@ -4,8 +4,6 @@ const el = {
   transcricao:        document.getElementById('transcricao'),
   responsavel:        document.getElementById('responsavel'),
   responsavelLabel:   document.getElementById('responsavelLabel'),
-  servico:            document.getElementById('servico'),
-  servicoGroup:       document.getElementById('servicoGroup'),
   submitBtn:          document.getElementById('submitBtn'),
   submitText:         document.getElementById('submitText'),
   formTitle:          document.getElementById('formTitle'),
@@ -22,6 +20,9 @@ const el = {
   responsavelDisplay: document.getElementById('responsavelDisplay'),
   servicoDisplay:     document.getElementById('servicoDisplay'),
   servicoMetaItem:    document.getElementById('servicoMetaItem'),
+  portfolioCard:      document.getElementById('portfolioCard'),
+  portfolioServicos:  document.getElementById('portfolioServicos'),
+  portfolioAnalise:   document.getElementById('portfolioAnalise'),
   criteriaGrid:       document.getElementById('criteriaGrid'),
   criteriaSubtitle:   document.getElementById('criteriaSubtitle'),
   topicosCard:        document.getElementById('topicosCard'),
@@ -97,20 +98,16 @@ function switchTipo(tipo) {
     el.formTitle.textContent      = 'Nova Análise de Onboarding';
     el.formSubtitle.textContent   = 'Cole a transcrição da reunião de início com o cliente';
     el.responsavelLabel.textContent = 'Nome do Gestor';
-    el.responsavel.placeholder    = 'Ex: Maria Santos';
+    el.responsavel.placeholder      = 'Ex: Maria Santos';
     el.transcricaoLabel.textContent = 'Transcrição da Reunião de Onboarding';
-    el.servicoGroup.style.display = 'none';
-    el.servico.required           = false;
-    el.submitText.textContent     = 'Analisar Onboarding';
+    el.submitText.textContent       = 'Analisar Onboarding';
   } else {
-    el.formTitle.textContent      = 'Nova Análise de Vendas';
-    el.formSubtitle.textContent   = 'Cole a transcrição da call e receba feedback detalhado';
+    el.formTitle.textContent        = 'Nova Análise de Vendas';
+    el.formSubtitle.textContent     = 'Cole a transcrição da call e receba feedback detalhado';
     el.responsavelLabel.textContent = 'Nome do Closer';
-    el.responsavel.placeholder    = 'Ex: João Silva';
+    el.responsavel.placeholder      = 'Ex: João Silva';
     el.transcricaoLabel.textContent = 'Transcrição da Call';
-    el.servicoGroup.style.display = '';
-    el.servico.required           = true;
-    el.submitText.textContent     = 'Analisar Call';
+    el.submitText.textContent       = 'Analisar Call';
   }
 }
 
@@ -175,6 +172,23 @@ function renderCriteria(criterios, tipo) {
   });
 }
 
+const SERVICO_ICONS = {
+  'Google Ads': '📢', 'Fotos IA': '📸', 'Website': '🌐', 'Combo': '⭐',
+};
+
+function renderPortfolio(servicos, analise) {
+  if (!analise && (!servicos || !servicos.length)) {
+    el.portfolioCard.style.display = 'none';
+    return;
+  }
+  el.portfolioCard.style.display = 'block';
+  el.portfolioServicos.innerHTML = (servicos || []).map(s => {
+    const icon = SERVICO_ICONS[s] || '📦';
+    return `<span class="portfolio-pill">${icon} ${escapeHtml(s)}</span>`;
+  }).join('');
+  el.portfolioAnalise.textContent = analise || '';
+}
+
 function renderTopicos(topicos) {
   if (!topicos || topicos.length === 0) {
     el.topicosCard.style.display = 'none';
@@ -202,12 +216,13 @@ function renderResults(data) {
   if (tipo === 'onboarding') {
     el.servicoMetaItem.style.display  = 'none';
     el.criteriaSubtitle.textContent   = '8 etapas do roteiro oficial Rota Studio';
+    el.portfolioCard.style.display    = 'none';
     renderTopicos(data.topicos_perdidos);
   } else {
-    el.servicoMetaItem.style.display  = 'flex';
-    el.servicoDisplay.textContent     = data.servico || '—';
+    el.servicoMetaItem.style.display  = 'none';
     el.criteriaSubtitle.textContent   = '6 critérios de performance do closer';
     el.topicosCard.style.display      = 'none';
+    renderPortfolio(data.servicos_identificados, data.estrategia_portfolio);
   }
 
   renderCriteria(data.criterios, tipo);
@@ -301,15 +316,10 @@ el.form.addEventListener('submit', async (e) => {
 
   const transcricao  = el.transcricao.value.trim();
   const responsavel  = el.responsavel.value.trim();
-  const servico      = currentTipo === 'onboarding' ? '' : el.servico.value;
   const tipo_reuniao = currentTipo;
 
   if (!transcricao || !responsavel) {
     showToast('Preencha todos os campos antes de analisar.');
-    return;
-  }
-  if (currentTipo === 'vendas' && !servico) {
-    showToast('Selecione o serviço sendo vendido.');
     return;
   }
   if (transcricao.length < 50) {
@@ -323,7 +333,7 @@ el.form.addEventListener('submit', async (e) => {
   if (window.innerWidth < 1100) el.loadingResultsCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
   try {
-    const data = await apiPost({ transcricao, responsavel, servico, tipo_reuniao });
+    const data = await apiPost({ transcricao, responsavel, servico: '', tipo_reuniao });
     renderResults(data);
     refreshHistory();
     if (window.innerWidth < 1100) el.resultsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });

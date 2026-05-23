@@ -53,21 +53,9 @@
           </div>
 
           <form id="analyzeForm">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="responsavel" id="responsavelLabel">Nome do Closer</label>
-                <input type="text" id="responsavel" placeholder="Ex: João Silva" required>
-              </div>
-              <div class="form-group" id="servicoGroup">
-                <label for="servico">Serviço sendo vendido</label>
-                <select id="servico">
-                  <option value="">Selecione...</option>
-                  <option value="Combo (Google Ads + Fotos IA + Website)">⭐ Combo — Todos os Serviços</option>
-                  <option value="Google Ads">Google Ads (Tráfego Pago)</option>
-                  <option value="Fotos IA">Fotos IA (Identidade Visual)</option>
-                  <option value="Website">Website (Site Profissional)</option>
-                </select>
-              </div>
+            <div class="form-group">
+              <label for="responsavel" id="responsavelLabel">Nome do Closer</label>
+              <input type="text" id="responsavel" placeholder="Ex: João Silva" required>
             </div>
             <div class="form-group">
               <label for="transcricao" id="transcricaoLabel">Transcrição da Call</label>
@@ -156,6 +144,16 @@
                 </div>
               </div>
             </div>
+          </div>
+
+          <!-- Portfolio strategy (vendas only) -->
+          <div class="card portfolio-card" id="portfolioCard" style="display:none">
+            <div class="card-header">
+              <h2>📦 Estratégia de Portfólio</h2>
+              <p>Serviços identificados e avaliação da abordagem comercial</p>
+            </div>
+            <div class="portfolio-servicos" id="portfolioServicos"></div>
+            <p class="portfolio-analise" id="portfolioAnalise"></p>
           </div>
 
           <!-- Topicos perdidos (onboarding only) -->
