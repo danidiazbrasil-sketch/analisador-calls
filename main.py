@@ -20,7 +20,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="Analisador de Calls", lifespan=lifespan)
+app = FastAPI(title="Analisador de Calls · Rota Studio", lifespan=lifespan)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -32,23 +32,26 @@ async def root():
 
 class AnalyzeRequest(BaseModel):
     transcricao: str
-    closer_name: str
-    servico: str
+    responsavel: str
+    servico: str = ""
+    tipo_reuniao: str = "vendas"
 
 
 @app.post("/analyze")
 async def analyze(request: AnalyzeRequest):
     try:
-        result = await analyze_call(request.transcricao, request.servico)
+        result = await analyze_call(request.transcricao, request.servico, request.tipo_reuniao)
         analysis_id = await db.save_analysis(
-            closer_name=request.closer_name,
-            servico=request.servico,
+            responsavel=request.responsavel,
+            servico=request.servico or request.tipo_reuniao,
+            tipo_reuniao=request.tipo_reuniao,
             result=result,
         )
         return {
             "id": analysis_id,
-            "closer_name": request.closer_name,
+            "responsavel": request.responsavel,
             "servico": request.servico,
+            "tipo_reuniao": request.tipo_reuniao,
             **result,
         }
     except ValueError as e:

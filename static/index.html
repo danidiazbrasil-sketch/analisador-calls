@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analisador de Calls · Rota Studio</title>
+  <title>Analisador de Reuniões · Rota Studio</title>
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
@@ -11,41 +11,56 @@
   <header class="header">
     <div class="header-content">
       <div class="header-brand">
-        <img
-          class="header-logo"
-          src="https://arotastudio.com.br/wp-content/uploads/2025/08/logo-rota-svg.svg"
-          alt="Rota Studio"
-        >
+        <img class="header-logo" src="https://arotastudio.com.br/wp-content/uploads/2025/08/logo-rota-svg.svg" alt="Rota Studio">
         <div class="header-divider"></div>
         <div>
           <div class="header-app-name">Ferramenta Interna</div>
-          <div class="header-app-label">Analisador de Calls</div>
+          <div class="header-app-label">Analisador de Reuniões</div>
         </div>
       </div>
-      <div class="header-badge">IA · Equipe de Vendas</div>
+      <div class="header-badge">IA · Equipe Rota Studio</div>
     </div>
   </header>
 
   <div class="container">
     <div class="main-grid">
 
-      <!-- Left Column: Form + History -->
+      <!-- Left Column -->
       <div class="left-col">
-
         <div class="card">
-          <div class="card-header">
-            <h2>Nova Análise</h2>
-            <p>Cole a transcrição da call e receba feedback detalhado</p>
+
+          <!-- Tipo Tabs -->
+          <div class="tipo-tabs">
+            <button class="tipo-tab active" data-tipo="vendas">
+              <span class="tipo-tab-icon">🎯</span>
+              <span class="tipo-tab-body">
+                <span class="tipo-tab-title">Reunião de Vendas</span>
+                <span class="tipo-tab-sub">Closers · Prospecção</span>
+              </span>
+            </button>
+            <button class="tipo-tab" data-tipo="onboarding">
+              <span class="tipo-tab-icon">🚀</span>
+              <span class="tipo-tab-body">
+                <span class="tipo-tab-title">Onboarding de Cliente</span>
+                <span class="tipo-tab-sub">Gestores · Início de contrato</span>
+              </span>
+            </button>
           </div>
+
+          <div class="card-header" style="margin-top:20px">
+            <h2 id="formTitle">Nova Análise de Vendas</h2>
+            <p id="formSubtitle">Cole a transcrição da call e receba feedback detalhado</p>
+          </div>
+
           <form id="analyzeForm">
             <div class="form-row">
               <div class="form-group">
-                <label for="closerName">Nome do Closer</label>
-                <input type="text" id="closerName" placeholder="Ex: João Silva" required>
+                <label for="responsavel" id="responsavelLabel">Nome do Closer</label>
+                <input type="text" id="responsavel" placeholder="Ex: João Silva" required>
               </div>
-              <div class="form-group">
+              <div class="form-group" id="servicoGroup">
                 <label for="servico">Serviço sendo vendido</label>
-                <select id="servico" required>
+                <select id="servico">
                   <option value="">Selecione...</option>
                   <option value="Combo (Google Ads + Fotos IA + Website)">⭐ Combo — Todos os Serviços</option>
                   <option value="Google Ads">Google Ads (Tráfego Pago)</option>
@@ -55,26 +70,31 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="transcricao">Transcrição da Call</label>
-              <textarea id="transcricao" placeholder="Cole aqui a transcrição completa da call de vendas..." rows="16" required></textarea>
+              <label for="transcricao" id="transcricaoLabel">Transcrição da Call</label>
+              <textarea id="transcricao" placeholder="Cole aqui a transcrição completa da reunião..." rows="16" required></textarea>
             </div>
             <button type="submit" id="submitBtn" class="btn-primary">
               <span class="btn-icon">🔍</span>
-              <span class="btn-text">Analisar Call</span>
+              <span class="btn-text" id="submitText">Analisar Call</span>
             </button>
           </form>
         </div>
 
-        <div class="card" id="historyCard">
+        <!-- History -->
+        <div class="card">
           <div class="card-header">
             <h2>Histórico de Análises</h2>
-            <p>Últimas 10 análises — clique para recarregar</p>
+            <p>Últimas 20 reuniões — clique para recarregar</p>
+          </div>
+          <div class="history-filter">
+            <button class="filter-btn active" data-filter="all">Todas</button>
+            <button class="filter-btn" data-filter="vendas">🎯 Vendas</button>
+            <button class="filter-btn" data-filter="onboarding">🚀 Onboarding</button>
           </div>
           <div id="historyList">
             <div class="empty-history">Nenhuma análise realizada ainda</div>
           </div>
         </div>
-
       </div>
 
       <!-- Right Column: Results -->
@@ -85,21 +105,21 @@
           <div class="empty-results-inner">
             <div class="empty-results-icon">📋</div>
             <h3>Pronto para analisar</h3>
-            <p>Preencha o formulário ao lado e clique em "Analisar Call" para receber uma avaliação completa da performance do closer.</p>
+            <p>Selecione o tipo de reunião, preencha o formulário e clique em analisar para receber uma avaliação completa.</p>
             <div class="empty-features">
-              <div class="feature-item">🎯 6 critérios avaliados</div>
-              <div class="feature-item">⚡ Momento crítico identificado</div>
-              <div class="feature-item">💡 Sugestões práticas de melhoria</div>
+              <div class="feature-item">🎯 <strong>Vendas:</strong> 6 critérios de performance do closer</div>
+              <div class="feature-item">🚀 <strong>Onboarding:</strong> 8 etapas do roteiro oficial Rota</div>
+              <div class="feature-item">⚡ Momento crítico identificado pela IA</div>
             </div>
           </div>
         </div>
 
-        <!-- Loading state -->
+        <!-- Loading -->
         <div class="card loading-results-card" id="loadingResultsCard" style="display:none">
           <div class="loading-inner">
             <div class="spinner-large"></div>
-            <h3>Analisando a call com IA...</h3>
-            <p>O Claude está avaliando a performance do closer em 6 critérios. Isso pode levar alguns segundos.</p>
+            <h3>Analisando com IA...</h3>
+            <p>O Claude Sonnet está avaliando a reunião em detalhes. Aguarde alguns segundos.</p>
             <div class="loading-steps">
               <div class="step active">Lendo transcrição</div>
               <div class="step">Avaliando critérios</div>
@@ -122,13 +142,14 @@
                 <div class="score-label">Nota Geral</div>
               </div>
               <div class="score-info">
+                <div class="result-tipo-badge" id="resultTipoBadge">—</div>
                 <div class="classification-pill" id="classificationPill">—</div>
                 <div class="score-meta">
                   <div class="score-meta-item">
                     <span class="meta-icon">👤</span>
-                    <span id="closerNameDisplay">—</span>
+                    <span id="responsavelDisplay">—</span>
                   </div>
-                  <div class="score-meta-item">
+                  <div class="score-meta-item" id="servicoMetaItem">
                     <span class="meta-icon">📦</span>
                     <span id="servicoDisplay">—</span>
                   </div>
@@ -137,11 +158,20 @@
             </div>
           </div>
 
+          <!-- Topicos perdidos (onboarding only) -->
+          <div class="card topicos-card" id="topicosCard" style="display:none">
+            <div class="card-header">
+              <h2>⚠️ Etapas Não Cumpridas</h2>
+              <p>Itens obrigatórios do roteiro que precisam de atenção</p>
+            </div>
+            <div id="topicosList"></div>
+          </div>
+
           <!-- Criteria -->
           <div class="card">
             <div class="card-header">
               <h2>Avaliação por Critério</h2>
-              <p>Notas de 0–10 com feedback específico</p>
+              <p id="criteriaSubtitle">Notas de 0–10 com feedback específico</p>
             </div>
             <div class="criteria-grid" id="criteriaGrid"></div>
           </div>
@@ -149,8 +179,8 @@
           <!-- Critical moment -->
           <div class="card moment-card">
             <div class="card-header">
-              <h2>⚡ Momento Crítico da Call</h2>
-              <p>O trecho que definiu o resultado da venda</p>
+              <h2>⚡ Momento Crítico da Reunião</h2>
+              <p>O trecho que definiu o resultado</p>
             </div>
             <blockquote class="moment-quote" id="momentoCritico"></blockquote>
           </div>
@@ -158,7 +188,7 @@
           <!-- Ideal phrase -->
           <div class="card ideal-card">
             <div class="card-header">
-              <h2>💡 O que o Closer Deveria Ter Dito</h2>
+              <h2>💡 O que Deveria Ter Sido Dito</h2>
               <p>Sugestão concreta de abordagem ideal</p>
             </div>
             <div class="ideal-phrase" id="fraseIdeal"></div>
@@ -171,10 +201,9 @@
   </div>
 
   <footer class="footer">
-    <p>Analisador de Calls · <a href="https://arotastudio.com.br" target="_blank">Rota Studio</a> · Powered by Claude Sonnet AI · Ferramenta interna para equipe de vendas</p>
+    <p>Analisador de Reuniões · <a href="https://arotastudio.com.br" target="_blank">Rota Studio</a> · Powered by Claude Sonnet AI · Ferramenta interna para equipe de vendas e gestores</p>
   </footer>
 
-  <!-- Error toast -->
   <div class="error-toast" id="errorToast"></div>
 
   <script src="/static/app.js"></script>

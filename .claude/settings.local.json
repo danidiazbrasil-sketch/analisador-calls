@@ -15,7 +15,26 @@
       "Bash(curl -s -X POST http://localhost:8000/analyze -H 'Content-Type: application/json' -d '{ *)",
       "Bash(python3 -m json.tool)",
       "Bash(git init *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(gh auth *)",
+      "Bash(brew install *)",
+      "Read(//private/tmp/**)",
+      "Bash(curl -sL https://github.com/cli/cli/releases/download/v2.63.2/gh_2.63.2_macOS_arm64.zip -o gh.zip)",
+      "Bash(unzip -q gh.zip)",
+      "Bash(ls ~/.ssh/id_ed25519.pub 2>/dev/null && echo \"JA_EXISTE\" || echo \"NAO_EXISTE\")",
+      "Bash(ssh-keygen -t ed25519 -C \"danidiazbrasil-sketch@github\" -f ~/.ssh/id_ed25519 -N \"\")",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "Bash(curl -s https://web-production-c1b39.up.railway.app/)",
+      "Bash(curl -s https://web-production-c1b39.up.railway.app/history)",
+      "Bash(curl -s https://analisador-de-call-rota-daniel.up.railway.app/)",
+      "Bash(curl -s https://analisador-de-call-rota-daniel.up.railway.app/history)",
+      "Bash(curl -s -X POST https://analisador-de-call-rota-daniel.up.railway.app/analyze -H 'Content-Type: application/json' -d '{ *)",
+      "WebFetch(domain:arotastudio.com.br)",
+      "Bash(curl -s https://arotastudio.com.br/)",
+      "Bash(grep -oE '\\(#[0-9a-fA-F]{3,6}|rgb\\\\\\([^\\)]+\\\\\\)|rgba\\\\\\([^\\)]+\\\\\\)\\)')",
+      "Bash(curl -s \"https://arotastudio.com.br/wp-content/uploads/2025/08/logo-rota-svg.svg\")"
     ]
   }
 }

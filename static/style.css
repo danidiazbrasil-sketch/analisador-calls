@@ -124,6 +124,112 @@ body {
 }
 .card-header p { font-size: .82rem; color: var(--text-muted); }
 
+/* ── Tipo Tabs ───────────────────────────────────────────── */
+.tipo-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.tipo-tab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--cream);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color .18s, background .18s;
+  font-family: inherit;
+}
+.tipo-tab:hover { border-color: var(--gold); background: var(--gold-bg); }
+.tipo-tab.active {
+  border-color: var(--gold);
+  background: var(--gold-bg);
+  box-shadow: 0 0 0 3px rgba(202,133,62,.12);
+}
+.tipo-tab-icon { font-size: 1.4rem; flex-shrink: 0; }
+.tipo-tab-body { display: flex; flex-direction: column; gap: 1px; }
+.tipo-tab-title {
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+.tipo-tab.active .tipo-tab-title { color: var(--gold-dark); }
+.tipo-tab-sub { font-size: .72rem; color: var(--text-muted); }
+
+/* ── History Filter ──────────────────────────────────────── */
+.history-filter {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.filter-btn {
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  background: #fff;
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.filter-btn:hover { border-color: var(--gold); color: var(--gold-dark); }
+.filter-btn.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #fff;
+}
+
+/* ── History tipo badge ──────────────────────────────────── */
+.history-tipo {
+  display: inline-block;
+  font-size: .68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 100px;
+  margin-bottom: 3px;
+}
+.history-tipo.vendas   { background: #fdf3e7; color: var(--gold-dark); border: 1px solid #e8c99a; }
+.history-tipo.onboarding { background: #edf5ff; color: #2563eb; border: 1px solid #bfdbfe; }
+
+/* ── Result tipo badge ───────────────────────────────────── */
+.result-tipo-badge {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 100px;
+  margin-bottom: 8px;
+  background: rgba(255,255,255,.12);
+  color: rgba(255,255,255,.7);
+  border: 1px solid rgba(255,255,255,.2);
+  letter-spacing: .3px;
+}
+
+/* ── Topicos Card ────────────────────────────────────────── */
+.topicos-card { border-left: 4px solid #ef4444; }
+.topicos-card .card-header h2 { color: #b91c1c; }
+.topico-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 7px;
+  margin-bottom: 7px;
+  font-size: .83rem;
+  color: #7f1d1d;
+  line-height: 1.5;
+}
+.topico-item:last-child { margin-bottom: 0; }
+.topico-icon { flex-shrink: 0; font-size: .9rem; margin-top: 1px; }
+
 /* ── Form ────────────────────────────────────────────────── */
 .form-row {
   display: grid;

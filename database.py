@@ -13,28 +13,41 @@ class Database:
                 CREATE TABLE IF NOT EXISTS analyses (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    closer_name TEXT NOT NULL,
+                    responsavel TEXT NOT NULL,
                     servico TEXT NOT NULL,
                     nota_geral REAL NOT NULL,
                     classificacao TEXT NOT NULL,
-                    result TEXT NOT NULL
+                    result TEXT NOT NULL,
+                    tipo_reuniao TEXT DEFAULT 'vendas'
                 )
             """)
+            # Migrations for existing databases
+            for col, definition in [
+                ("tipo_reuniao", "TEXT DEFAULT 'vendas'"),
+                ("responsavel", "TEXT DEFAULT ''"),
+            ]:
+                try:
+                    await db.execute(f"ALTER TABLE analyses ADD COLUMN {col} {definition}")
+                except Exception:
+                    pass
             await db.commit()
 
-    async def save_analysis(self, closer_name: str, servico: str, result: dict) -> int:
+    async def save_analysis(
+        self, responsavel: str, servico: str, tipo_reuniao: str, result: dict
+    ) -> int:
         async with aiosqlite.connect(self.db_path) as db:
             cursor = await db.execute(
                 """
-                INSERT INTO analyses (closer_name, servico, nota_geral, classificacao, result)
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO analyses (responsavel, servico, nota_geral, classificacao, result, tipo_reuniao)
+                VALUES (?, ?, ?, ?, ?, ?)
                 """,
                 (
-                    closer_name,
+                    responsavel,
                     servico,
                     result["nota_geral"],
                     result["classificacao"],
                     json.dumps(result, ensure_ascii=False),
+                    tipo_reuniao,
                 ),
             )
             await db.commit()
@@ -45,10 +58,10 @@ class Database:
             db.row_factory = aiosqlite.Row
             cursor = await db.execute(
                 """
-                SELECT id, created_at, closer_name, servico, nota_geral, classificacao
+                SELECT id, created_at, responsavel, servico, nota_geral, classificacao, tipo_reuniao
                 FROM analyses
                 ORDER BY created_at DESC
-                LIMIT 10
+                LIMIT 20
                 """
             )
             rows = await cursor.fetchall()
@@ -69,7 +82,8 @@ class Database:
             return {
                 "id": row_dict["id"],
                 "created_at": row_dict["created_at"],
-                "closer_name": row_dict["closer_name"],
+                "responsavel": row_dict.get("responsavel") or row_dict.get("closer_name", ""),
                 "servico": row_dict["servico"],
+                "tipo_reuniao": row_dict.get("tipo_reuniao", "vendas"),
                 **result,
             }
