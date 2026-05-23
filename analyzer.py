@@ -107,11 +107,11 @@ O roteiro oficial de onboarding da Rota Studio tem 8 etapas obrigatórias:
 
 4. VALIDAÇÃO ESTRATÉGICA: Confirmar e registrar — nicho/especialidade, cidade/região de atendimento, formato das sessões (online/presencial), valor da sessão. Justificar: "Pergunto isso para garantir que as campanhas sejam direcionadas para o público certo"
 
-5. ENTREGA DO SCRIPT DE VENDAS: Enviar o script no WhatsApp, orientar o uso, reforçar que "o diferencial não é o volume de leads, e sim a sua conversão"
+5. ENTREGA DO SCRIPT DE VENDAS: Mencionar o script de vendas e orientar o uso, reforçar que "o diferencial não é o volume de leads, e sim a sua conversão". IMPORTANTE: o envio do script pode ocorrer durante a reunião OU após ela (pelo WhatsApp/grupo). Avalie se o gestor mencionou o script e orientou o cliente — o momento exato do envio não é determinante para a nota.
 
 6. ALINHAMENTO DE EXPECTATIVAS: Explicar o papel da Rota (tráfego + direcionamento), reforçar que Instagram deve estar ativo e com clareza de nicho, que sessão acima de R$250 exige posicionamento, que o cliente deve responder rápido no WhatsApp. Frase obrigatória: "Tráfego traz pessoas até você. Conversão acontece por causa do seu posicionamento e do seu comercial."
 
-7. SUPORTE E PRÓXIMOS PASSOS: Informar sobre aulas da comunidade, encontros mensais com a Cami, suporte no grupo. Transmitir: "Você nunca vai sentir que está sozinho(a)."
+7. SUPORTE E PRÓXIMOS PASSOS: Transmitir que o cliente nunca estará sozinho ("Você nunca vai sentir que está sozinho(a)."). ATENÇÃO: mencionar aulas da comunidade, encontros mensais com a Cami ou suporte no grupo é desejável mas CONTEXTUAL — deve ser mencionado quando o cliente demonstrar dúvida, insegurança ou perguntar sobre suporte. Se o cliente não trouxer esse tema e a reunião fluir com segurança, a ausência desse tópico não deve penalizar fortemente. O essencial é que o cliente sinta que tem suporte disponível.
 
 8. ENCERRAMENTO: Reforçar segurança e entusiasmo ("Agora é com a gente. Vamos começar suas campanhas."), finalizar com abertura para dúvidas ("Se surgir qualquer dúvida após a reunião, me chama aqui no grupo.")
 
