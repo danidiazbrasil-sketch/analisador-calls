@@ -157,25 +157,32 @@ async def analyze_call(transcricao: str, servico: str, tipo_reuniao: str = "vend
     else:
         prompt = PROMPT_VENDAS.format(transcricao=transcricao)
 
+    # Assistant prefill: força o modelo a começar direto com { sem texto extra
     message = await client.messages.create(
         model="claude-haiku-4-5-20251001",
-        max_tokens=4096,
-        messages=[{"role": "user", "content": prompt}],
+        max_tokens=6000,
+        messages=[
+            {"role": "user", "content": prompt},
+            {"role": "assistant", "content": "{"},
+        ],
     )
 
-    response_text = message.content[0].text.strip()
+    # O prefill '{' não é incluído na resposta — precisa ser recolocado
+    response_text = "{" + message.content[0].text.strip()
 
+    # Remove blocos markdown caso ainda apareçam
     json_match = re.search(r"```(?:json)?\s*([\s\S]*?)\s*```", response_text)
     if json_match:
         response_text = json_match.group(1).strip()
-
-    # Fallback: extract from first { to last } in case there's surrounding text
-    if not response_text.startswith('{'):
-        brace_match = re.search(r'(\{[\s\S]*\})', response_text)
-        if brace_match:
-            response_text = brace_match.group(1)
+        if not response_text.startswith("{"):
+            response_text = "{" + response_text
 
     try:
         return json.loads(response_text)
-    except json.JSONDecodeError:
-        raise ValueError("A IA retornou uma resposta inválida. Por favor, tente novamente.")
+    except json.JSONDecodeError as e:
+        # Log do problema para facilitar debug futuro
+        preview = response_text[:300].replace("\n", " ")
+        raise ValueError(
+            f"A IA retornou uma resposta inválida. Tente novamente. "
+            f"(Detalhe: {e} | Início da resposta: {preview})"
+        )
