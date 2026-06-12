@@ -12,7 +12,29 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-_db_path = os.getenv("DATABASE_PATH", "analyses.db")
+# ── Persistência: nunca usar armazenamento efêmero no Railway sem avisar ──────
+_db_path = os.getenv("DATABASE_PATH")
+_on_railway = bool(os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("RAILWAY_PROJECT_ID"))
+
+if not _db_path:
+    if _on_railway:
+        raise RuntimeError(
+            "\n" + "=" * 64 +
+            "\n  ⛔ CONFIGURAÇÃO OBRIGATÓRIA: variável DATABASE_PATH não definida."
+            "\n  Sem ela o histórico seria apagado a cada deploy (disco efêmero)."
+            "\n"
+            "\n  Para corrigir no Railway (passo único):"
+            "\n   1) Crie um Volume no serviço com Mount Path:  /data"
+            "\n   2) Adicione a variável:  DATABASE_PATH = /data/analyses.db"
+            "\n"
+            "\n  O app só vai iniciar depois disso — de propósito, para proteger seus dados."
+            "\n" + "=" * 64 + "\n"
+        )
+    _db_path = "analyses.db"  # ambiente local
+
+# garante que o diretório do banco exista (ex.: /data)
+os.makedirs(os.path.dirname(os.path.abspath(_db_path)), exist_ok=True)
+
 db = Database(db_path=_db_path)
 
 

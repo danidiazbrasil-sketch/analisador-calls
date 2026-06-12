@@ -1,14 +1,40 @@
 import aiosqlite
 import json
+import os
+import glob
+import shutil
 from datetime import datetime, timedelta
 from typing import Optional
+
+MAX_BACKUPS = 20
 
 
 class Database:
     def __init__(self, db_path: str = "analyses.db"):
         self.db_path = db_path
 
+    def _backup(self):
+        """Copia o banco para uma pasta backups/ ao lado dele. Mantém os últimos MAX_BACKUPS.
+        Roda antes de qualquer escrita/migração, com o banco fechado — cópia consistente."""
+        if not os.path.exists(self.db_path) or os.path.getsize(self.db_path) == 0:
+            return
+        base_dir = os.path.dirname(os.path.abspath(self.db_path))
+        bdir = os.path.join(base_dir, "backups")
+        try:
+            os.makedirs(bdir, exist_ok=True)
+            ts = datetime.now().strftime("%Y%m%d-%H%M%S")
+            shutil.copy2(self.db_path, os.path.join(bdir, f"analyses-{ts}.db"))
+            backups = sorted(glob.glob(os.path.join(bdir, "analyses-*.db")))
+            for old in backups[:-MAX_BACKUPS]:
+                try:
+                    os.remove(old)
+                except OSError:
+                    pass
+        except OSError:
+            pass  # nunca derruba o app por causa de backup
+
     async def init(self):
+        self._backup()
         async with aiosqlite.connect(self.db_path) as db:
             await db.execute("""
                 CREATE TABLE IF NOT EXISTS analyses (
