@@ -12,7 +12,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-db = Database()
+_db_path = os.getenv("DATABASE_PATH", "analyses.db")
+db = Database(db_path=_db_path)
 
 
 @asynccontextmanager
