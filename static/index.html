@@ -22,253 +22,384 @@
     </div>
   </header>
 
+  <!-- ── Navegação principal ── -->
+  <nav class="main-nav">
+    <div class="main-nav-inner">
+      <button class="nav-tab active" data-view="analise">🔍 Análise</button>
+      <button class="nav-tab" data-view="performance">📊 Performance</button>
+      <button class="nav-tab" data-view="equipe">👥 Equipe</button>
+    </div>
+  </nav>
+
   <div class="container">
-    <div class="main-grid">
 
-      <!-- Left Column -->
-      <div class="left-col">
-        <div class="card">
+    <!-- ════════════════════════════════════════════════════ VIEW: ANÁLISE -->
+    <div id="viewAnalise" class="view-section">
+      <div class="main-grid">
 
-          <!-- Tipo Tabs -->
-          <div class="tipo-tabs">
-            <button class="tipo-tab active" data-tipo="vendas">
-              <span class="tipo-tab-icon">🎯</span>
-              <span class="tipo-tab-body">
-                <span class="tipo-tab-title">Reunião de Vendas</span>
-                <span class="tipo-tab-sub">Closers · Prospecção</span>
-              </span>
-            </button>
-            <button class="tipo-tab" data-tipo="onboarding">
-              <span class="tipo-tab-icon">🚀</span>
-              <span class="tipo-tab-body">
-                <span class="tipo-tab-title">Onboarding de Cliente</span>
-                <span class="tipo-tab-sub">Gestores · Início de contrato</span>
-              </span>
-            </button>
-          </div>
+        <!-- Left Column -->
+        <div class="left-col">
+          <div class="card">
 
-          <div class="card-header" style="margin-top:20px">
-            <h2 id="formTitle">Nova Análise de Vendas</h2>
-            <p id="formSubtitle">Cole a transcrição da call e receba feedback detalhado</p>
-          </div>
-
-          <form id="analyzeForm">
-            <div class="form-row">
-              <div class="form-group" style="margin-bottom:0">
-                <label for="responsavel" id="responsavelLabel">Nome do Closer</label>
-                <input type="text" id="responsavel" placeholder="Ex: João Silva" required>
-              </div>
-              <div class="form-group" style="margin-bottom:0">
-                <label for="cliente">Nome do Cliente</label>
-                <input type="text" id="cliente" placeholder="Ex: Dra. Ana Lima">
-              </div>
+            <!-- Tipo Tabs -->
+            <div class="tipo-tabs">
+              <button class="tipo-tab active" data-tipo="vendas">
+                <span class="tipo-tab-icon">🎯</span>
+                <span class="tipo-tab-body">
+                  <span class="tipo-tab-title">Reunião de Vendas</span>
+                  <span class="tipo-tab-sub">Closers · Prospecção</span>
+                </span>
+              </button>
+              <button class="tipo-tab" data-tipo="onboarding">
+                <span class="tipo-tab-icon">🚀</span>
+                <span class="tipo-tab-body">
+                  <span class="tipo-tab-title">Onboarding de Cliente</span>
+                  <span class="tipo-tab-sub">Gestores · Início de contrato</span>
+                </span>
+              </button>
             </div>
-            <div class="form-group">
-              <label for="transcricao" id="transcricaoLabel">Transcrição da Call</label>
-              <textarea id="transcricao" placeholder="Cole aqui a transcrição completa da reunião..." rows="16" required></textarea>
+
+            <div class="card-header" style="margin-top:20px">
+              <h2 id="formTitle">Nova Análise de Vendas</h2>
+              <p id="formSubtitle">Cole a transcrição da call e receba feedback detalhado</p>
             </div>
-            <button type="submit" id="submitBtn" class="btn-primary">
-              <span class="btn-icon">🔍</span>
-              <span class="btn-text" id="submitText">Analisar Call</span>
-            </button>
-          </form>
-        </div>
 
-        <!-- History -->
-        <div class="card">
-          <div class="card-header">
-            <h2>Histórico de Análises</h2>
-            <p>Últimas 20 reuniões — clique para recarregar</p>
-          </div>
-          <div class="history-filter">
-            <button class="filter-btn active" data-filter="all">Todas</button>
-            <button class="filter-btn" data-filter="vendas">🎯 Vendas</button>
-            <button class="filter-btn" data-filter="onboarding">🚀 Onboarding</button>
-          </div>
-          <div id="historyList">
-            <div class="empty-history">Nenhuma análise realizada ainda</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Column: Results -->
-      <div class="right-col">
-
-        <!-- Empty state -->
-        <div class="card empty-results-card" id="emptyResultsCard">
-          <div class="empty-results-inner">
-            <div class="empty-results-icon">📋</div>
-            <h3>Pronto para analisar</h3>
-            <p>Selecione o tipo de reunião, preencha o formulário e clique em analisar para receber uma avaliação completa.</p>
-            <div class="empty-features">
-              <div class="feature-item">🎯 <strong>Vendas:</strong> 6 critérios de performance do closer</div>
-              <div class="feature-item">🚀 <strong>Onboarding:</strong> 8 etapas do roteiro oficial Rota</div>
-              <div class="feature-item">⚡ Momento crítico identificado pela IA</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Loading -->
-        <div class="card loading-results-card" id="loadingResultsCard" style="display:none">
-          <div class="loading-inner">
-            <div class="spinner-large"></div>
-            <h3>Analisando com IA...</h3>
-            <p>O Claude Sonnet está avaliando a reunião em detalhes. Aguarde alguns segundos.</p>
-            <div class="loading-steps">
-              <div class="step active">Lendo transcrição</div>
-              <div class="step">Avaliando critérios</div>
-              <div class="step">Gerando feedback</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Results -->
-        <div id="resultsArea" style="display:none">
-
-          <!-- Download action bar -->
-          <div class="results-actions">
-            <button class="btn-download" id="downloadBtn">
-              <span>📄</span> Baixar PDF
-            </button>
-          </div>
-
-          <!-- Score overview -->
-          <div class="card score-card">
-            <div class="score-layout">
-              <div class="score-circle-wrap">
-                <div class="score-circle" id="scoreCircle">
-                  <span class="score-num" id="scoreNum">-</span>
-                  <span class="score-denom">/10</span>
-                </div>
-                <div class="score-label">Nota Geral</div>
-              </div>
-              <div class="score-info">
-                <div class="result-tipo-badge" id="resultTipoBadge">—</div>
-                <div class="classification-pill" id="classificationPill">—</div>
-                <div class="score-meta">
-                  <div class="score-meta-item">
-                    <span class="meta-icon">👤</span>
-                    <span id="responsavelDisplay">—</span>
+            <form id="analyzeForm">
+              <div class="form-row">
+                <div class="form-group" style="margin-bottom:0">
+                  <label id="responsavelLabel">Nome do Closer</label>
+                  <div class="closer-select-wrap">
+                    <select id="responsavelSelect">
+                      <option value="">Carregando...</option>
+                    </select>
+                    <button type="button" class="btn-add-closer" id="btnAddCloser" title="Adicionar novo">+</button>
                   </div>
-                  <div class="score-meta-item" id="clienteMetaItem" style="display:none">
-                    <span class="meta-icon">🧑‍⚕️</span>
-                    <span id="clienteDisplay">—</span>
-                  </div>
-                  <div class="score-meta-item" id="servicoMetaItem">
-                    <span class="meta-icon">📦</span>
-                    <span id="servicoDisplay">—</span>
+                  <div class="new-closer-row" id="newCloserRow" style="display:none">
+                    <input type="text" id="newCloserNome" placeholder="Nome do novo closer">
+                    <button type="button" class="btn-criar-closer" id="btnCriarCloser">Criar</button>
                   </div>
                 </div>
+                <div class="form-group" style="margin-bottom:0">
+                  <label for="cliente">Nome do Cliente</label>
+                  <input type="text" id="cliente" placeholder="Ex: Dra. Ana Lima">
+                </div>
               </div>
-            </div>
-          </div>
-
-          <!-- Notas do Avaliador (vendas only) -->
-          <div class="card notas-card" id="notasCard" style="display:none">
-            <div class="card-header">
-              <h2>📝 Notas do Avaliador</h2>
-              <p>Pontos positivos, críticos e oportunidades perdidas identificados pela IA</p>
-            </div>
-            <div id="notasList"></div>
-          </div>
-
-          <!-- Métricas da Call (vendas only) -->
-          <div class="card metricas-card" id="metricasCard" style="display:none">
-            <div class="card-header">
-              <h2>📊 Métricas da Call</h2>
-              <p>Dados objetivos sobre a dinâmica da conversa</p>
-            </div>
-            <div class="metricas-stats" id="metricasStats"></div>
-            <div class="talk-ratio-wrap">
-              <div class="talk-ratio-bar">
-                <div class="talk-bar-closer" id="talkRatioCloser"></div>
-                <div class="talk-bar-prospect" id="talkRatioProspect"></div>
+              <div class="form-group">
+                <label for="transcricao" id="transcricaoLabel">Transcrição da Call</label>
+                <textarea id="transcricao" placeholder="Cole aqui a transcrição completa da reunião..." rows="16" required></textarea>
               </div>
-              <div class="talk-ratio-labels">
-                <span>Closer</span><span>Prospect</span>
-              </div>
-            </div>
-            <div class="diagnostico-box" id="diagnosticoProporcao"></div>
+              <button type="submit" id="submitBtn" class="btn-primary">
+                <span class="btn-icon">🔍</span>
+                <span class="btn-text" id="submitText">Analisar Call</span>
+              </button>
+            </form>
           </div>
 
-          <!-- SPIN Selling (vendas only) -->
-          <div class="card spin-card" id="spinCard" style="display:none">
-            <div class="card-header">
-              <h2>🔄 SPIN Selling</h2>
-              <p>Avaliação dos 4 pilares da venda consultiva</p>
-            </div>
-            <div class="spin-grid" id="spinGrid"></div>
-            <div class="spin-avaliacao-box" id="spinAvaliacao"></div>
-          </div>
-
-          <!-- Portfolio strategy (vendas only) -->
-          <div class="card portfolio-card" id="portfolioCard" style="display:none">
-            <div class="card-header">
-              <h2>📦 Estratégia de Portfólio</h2>
-              <p>Serviços identificados e avaliação da abordagem comercial</p>
-            </div>
-            <div class="portfolio-servicos" id="portfolioServicos"></div>
-            <p class="portfolio-analise" id="portfolioAnalise"></p>
-          </div>
-
-          <!-- Topicos perdidos (onboarding only) -->
-          <div class="card topicos-card" id="topicosCard" style="display:none">
-            <div class="card-header">
-              <h2>⚠️ Etapas Não Cumpridas</h2>
-              <p>Itens obrigatórios do roteiro que precisam de atenção</p>
-            </div>
-            <div id="topicosList"></div>
-          </div>
-
-          <!-- Técnicas Consultivas (vendas only) -->
-          <div class="card tecnicas-card" id="tecnicasCard" style="display:none">
-            <div class="card-header">
-              <h2>🎯 Técnicas Consultivas</h2>
-              <p>5 técnicas essenciais de venda consultiva avaliadas na call</p>
-            </div>
-            <div class="tecnicas-grid" id="tecnicasGrid"></div>
-          </div>
-
-          <!-- Criteria -->
+          <!-- History -->
           <div class="card">
             <div class="card-header">
-              <h2>Avaliação por Critério</h2>
-              <p id="criteriaSubtitle">Notas de 0–10 com feedback específico</p>
+              <h2>Histórico de Análises</h2>
+              <p id="historyCountLabel">Clique para carregar uma análise</p>
             </div>
-            <div class="criteria-grid" id="criteriaGrid"></div>
+            <div class="history-filter">
+              <button class="filter-btn active" data-filter="all">Todas</button>
+              <button class="filter-btn" data-filter="vendas">🎯 Vendas</button>
+              <button class="filter-btn" data-filter="onboarding">🚀 Onboarding</button>
+            </div>
+            <div id="historyList">
+              <div class="empty-history">Nenhuma análise realizada ainda</div>
+            </div>
+            <div class="history-pagination" id="historyPagination" style="display:none">
+              <button class="btn-load-more" id="btnLoadMore">Carregar mais</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Results -->
+        <div class="right-col">
+
+          <!-- Empty state -->
+          <div class="card empty-results-card" id="emptyResultsCard">
+            <div class="empty-results-inner">
+              <div class="empty-results-icon">📋</div>
+              <h3>Pronto para analisar</h3>
+              <p>Selecione o tipo de reunião, preencha o formulário e clique em analisar.</p>
+              <div class="empty-features">
+                <div class="feature-item">🎯 <strong>Vendas:</strong> 6 critérios de performance do closer</div>
+                <div class="feature-item">🚀 <strong>Onboarding:</strong> 8 etapas do roteiro oficial Rota</div>
+                <div class="feature-item">⚡ Momento crítico identificado pela IA</div>
+              </div>
+            </div>
           </div>
 
-          <!-- Critical moment -->
-          <div class="card moment-card">
-            <div class="card-header">
-              <h2>⚡ Momento Crítico da Reunião</h2>
-              <p>O trecho que definiu o resultado</p>
+          <!-- Loading -->
+          <div class="card loading-results-card" id="loadingResultsCard" style="display:none">
+            <div class="loading-inner">
+              <div class="spinner-large"></div>
+              <h3>Analisando com IA...</h3>
+              <p>O Claude Haiku está avaliando a reunião em detalhes. Aguarde alguns segundos.</p>
+              <div class="loading-steps">
+                <div class="step active">Lendo transcrição</div>
+                <div class="step">Avaliando critérios</div>
+                <div class="step">Gerando feedback</div>
+              </div>
             </div>
-            <blockquote class="moment-quote" id="momentoCritico"></blockquote>
           </div>
 
-          <!-- Ideal phrase -->
-          <div class="card ideal-card">
-            <div class="card-header">
-              <h2>💡 O que Deveria Ter Sido Dito</h2>
-              <p>Sugestão concreta de abordagem ideal</p>
-            </div>
-            <div class="ideal-phrase" id="fraseIdeal"></div>
-          </div>
+          <!-- Results -->
+          <div id="resultsArea" style="display:none">
 
+            <!-- Download + Comentário actions -->
+            <div class="results-actions">
+              <button class="btn-download" id="downloadBtn">📄 Baixar PDF</button>
+            </div>
+
+            <!-- Score overview -->
+            <div class="card score-card">
+              <div class="score-layout">
+                <div class="score-circle-wrap">
+                  <div class="score-circle" id="scoreCircle">
+                    <span class="score-num" id="scoreNum">-</span>
+                    <span class="score-denom">/10</span>
+                  </div>
+                  <div class="score-label">Nota Geral</div>
+                </div>
+                <div class="score-info">
+                  <div class="result-tipo-badge" id="resultTipoBadge">—</div>
+                  <div class="classification-pill" id="classificationPill">—</div>
+                  <div class="score-meta">
+                    <div class="score-meta-item">
+                      <span class="meta-icon">👤</span>
+                      <span id="responsavelDisplay">—</span>
+                    </div>
+                    <div class="score-meta-item" id="clienteMetaItem" style="display:none">
+                      <span class="meta-icon">🧑‍⚕️</span>
+                      <span id="clienteDisplay">—</span>
+                    </div>
+                    <div class="score-meta-item" id="servicoMetaItem">
+                      <span class="meta-icon">📦</span>
+                      <span id="servicoDisplay">—</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notas do Avaliador (vendas only) -->
+            <div class="card notas-card" id="notasCard" style="display:none">
+              <div class="card-header">
+                <h2>📝 Notas do Avaliador</h2>
+                <p>Pontos positivos, críticos e oportunidades identificados pela IA</p>
+              </div>
+              <div id="notasList"></div>
+            </div>
+
+            <!-- Métricas (vendas only) -->
+            <div class="card metricas-card" id="metricasCard" style="display:none">
+              <div class="card-header">
+                <h2>📊 Métricas da Call</h2>
+                <p>Dados objetivos sobre a dinâmica da conversa</p>
+              </div>
+              <div class="metricas-stats" id="metricasStats"></div>
+              <div class="talk-ratio-wrap">
+                <div class="talk-ratio-bar">
+                  <div class="talk-bar-closer" id="talkRatioCloser"></div>
+                  <div class="talk-bar-prospect" id="talkRatioProspect"></div>
+                </div>
+                <div class="talk-ratio-labels"><span>Closer</span><span>Prospect</span></div>
+              </div>
+              <div class="diagnostico-box" id="diagnosticoProporcao"></div>
+            </div>
+
+            <!-- SPIN Selling (vendas only) -->
+            <div class="card spin-card" id="spinCard" style="display:none">
+              <div class="card-header">
+                <h2>🔄 SPIN Selling</h2>
+                <p>Avaliação dos 4 pilares da venda consultiva</p>
+              </div>
+              <div class="spin-grid" id="spinGrid"></div>
+              <div class="spin-avaliacao-box" id="spinAvaliacao"></div>
+            </div>
+
+            <!-- Portfolio (vendas only) -->
+            <div class="card portfolio-card" id="portfolioCard" style="display:none">
+              <div class="card-header">
+                <h2>📦 Estratégia de Portfólio</h2>
+                <p>Serviços identificados e avaliação da abordagem comercial</p>
+              </div>
+              <div class="portfolio-servicos" id="portfolioServicos"></div>
+              <p class="portfolio-analise" id="portfolioAnalise"></p>
+            </div>
+
+            <!-- Topicos perdidos (onboarding only) -->
+            <div class="card topicos-card" id="topicosCard" style="display:none">
+              <div class="card-header">
+                <h2>⚠️ Etapas Não Cumpridas</h2>
+                <p>Itens obrigatórios do roteiro que precisam de atenção</p>
+              </div>
+              <div id="topicosList"></div>
+            </div>
+
+            <!-- Técnicas Consultivas (vendas only) -->
+            <div class="card tecnicas-card" id="tecnicasCard" style="display:none">
+              <div class="card-header">
+                <h2>🎯 Técnicas Consultivas</h2>
+                <p>5 técnicas essenciais de venda consultiva avaliadas na call</p>
+              </div>
+              <div class="tecnicas-grid" id="tecnicasGrid"></div>
+            </div>
+
+            <!-- Criteria -->
+            <div class="card">
+              <div class="card-header">
+                <h2>Avaliação por Critério</h2>
+                <p id="criteriaSubtitle">Notas de 0–10 com feedback específico</p>
+              </div>
+              <div class="criteria-grid" id="criteriaGrid"></div>
+            </div>
+
+            <!-- Critical moment -->
+            <div class="card moment-card">
+              <div class="card-header">
+                <h2>⚡ Momento Crítico da Reunião</h2>
+                <p>O trecho que definiu o resultado</p>
+              </div>
+              <blockquote class="moment-quote" id="momentoCritico"></blockquote>
+            </div>
+
+            <!-- Ideal phrase -->
+            <div class="card ideal-card">
+              <div class="card-header">
+                <h2>💡 O que Deveria Ter Sido Dito</h2>
+                <p>Sugestão concreta de abordagem ideal</p>
+              </div>
+              <div class="ideal-phrase" id="fraseIdeal"></div>
+            </div>
+
+            <!-- Comentário do gestor -->
+            <div class="card comentario-card">
+              <div class="card-header">
+                <h2>📌 Nota do Gestor</h2>
+                <p>Observação interna sobre esta análise</p>
+              </div>
+              <textarea id="comentarioInput" class="comentario-textarea" placeholder="Digite aqui sua observação sobre esta reunião..."></textarea>
+              <button class="btn-salvar-comentario" id="btnSalvarComentario">Salvar nota</button>
+            </div>
+
+          </div><!-- /resultsArea -->
+        </div>
+      </div>
+    </div><!-- /viewAnalise -->
+
+
+    <!-- ════════════════════════════════════════════════════ VIEW: PERFORMANCE -->
+    <div id="viewPerformance" class="view-section" style="display:none">
+      <div class="perf-header">
+        <div>
+          <h1 class="perf-title">Dashboard de Performance</h1>
+          <p class="perf-sub">Acompanhe a evolução de cada closer/gestor ao longo do tempo</p>
+        </div>
+        <div class="perf-controls">
+          <select id="perfTipo" class="perf-select">
+            <option value="vendas">🎯 Closers — Vendas</option>
+            <option value="onboarding">🚀 Gestores — Onboarding</option>
+          </select>
+          <select id="perfPeriodo" class="perf-select">
+            <option value="">Todos os tempos</option>
+            <option value="7">Últimos 7 dias</option>
+            <option value="30" selected>Últimos 30 dias</option>
+            <option value="90">Últimos 90 dias</option>
+          </select>
+          <button class="btn-download" id="btnExportPerfPdf">📄 Exportar PDF</button>
         </div>
       </div>
 
-    </div>
-  </div>
+      <div id="perfDashboard">
+        <!-- KPIs -->
+        <div class="kpi-grid" id="kpiGrid"></div>
+
+        <!-- Pontos fracos + ranking side by side -->
+        <div class="perf-row">
+          <div class="card perf-card-half">
+            <div class="card-header">
+              <h2>⚠️ Pontos Fracos do Time</h2>
+              <p>Critérios com menor média — prioridade de treinamento</p>
+            </div>
+            <div id="weakCriteriaList"></div>
+          </div>
+          <div class="card perf-card-half">
+            <div class="card-header">
+              <h2>🏆 Ranking de Performance</h2>
+              <p>Ordenado por nota média no período</p>
+            </div>
+            <div id="rankingList"></div>
+          </div>
+        </div>
+
+        <!-- Per-closer charts -->
+        <div id="closerCharts"></div>
+      </div>
+    </div><!-- /viewPerformance -->
+
+
+    <!-- ════════════════════════════════════════════════════ VIEW: EQUIPE -->
+    <div id="viewEquipe" class="view-section" style="display:none">
+      <div class="equipe-header">
+        <div>
+          <h1 class="perf-title">Gestão da Equipe</h1>
+          <p class="perf-sub">Cadastre closers e gestores para rastrear performance individualmente</p>
+        </div>
+        <div class="equipe-actions">
+          <button class="btn-link-history" id="btnLinkHistory">🔗 Vincular histórico por nome</button>
+          <button class="btn-primary-sm" id="btnNovoCloser">+ Novo membro</button>
+        </div>
+      </div>
+
+      <!-- Form novo/editar -->
+      <div class="card equipe-form-card" id="equipeFormCard" style="display:none">
+        <div class="card-header">
+          <h2 id="equipeFormTitle">Novo Membro da Equipe</h2>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="margin-bottom:0">
+            <label>Nome</label>
+            <input type="text" id="equipeNome" placeholder="Ex: João Silva">
+          </div>
+          <div class="form-group" style="margin-bottom:0">
+            <label>Tipo</label>
+            <select id="equipeTipo">
+              <option value="closer">Closer (Vendas)</option>
+              <option value="gestor">Gestor (Onboarding)</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:0">
+            <label>Meta (nota)</label>
+            <input type="number" id="equipeMeta" value="7.0" min="1" max="10" step="0.5">
+          </div>
+        </div>
+        <div class="equipe-form-btns">
+          <button class="btn-primary-sm" id="btnSalvarMembro">Salvar</button>
+          <button class="btn-cancel" id="btnCancelarMembro">Cancelar</button>
+        </div>
+      </div>
+
+      <!-- Tabela de membros -->
+      <div class="card">
+        <div id="equipeTable"></div>
+      </div>
+    </div><!-- /viewEquipe -->
+
+  </div><!-- /container -->
 
   <footer class="footer">
-    <p>Analisador de Reuniões · <a href="https://arotastudio.com.br" target="_blank">Rota Studio</a> · Powered by Claude AI · Ferramenta interna para equipe de vendas e gestores</p>
+    <p>Analisador de Reuniões · <a href="https://arotastudio.com.br" target="_blank">Rota Studio</a> · Powered by Claude AI · Ferramenta interna</p>
     <p class="footer-credit">Desenvolvido por <strong>Daniel Uzcategui</strong></p>
   </footer>
 
   <div class="error-toast" id="errorToast"></div>
+  <div class="success-toast" id="successToast"></div>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://unpkg.com/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
   <script src="/static/app.js"></script>
 </body>
